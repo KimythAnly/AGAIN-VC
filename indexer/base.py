@@ -6,8 +6,8 @@ import logging
 logger = logging.getLogger(__file__)
 
 class BaseIndexer():
-    def __init__(self, config):
-        self.config = config
+    def __init__(self):
+        pass
 
     def make_indexes(self, input_path, output_path, split_all, split_train):
         logger.info(f'Starting to make indexes from {input_path}.')

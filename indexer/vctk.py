@@ -2,8 +2,8 @@ import os
 from .base import BaseIndexer
 
 class Indexer(BaseIndexer):
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self):
+        super().__init__()
 
     def split(self, file_list, split_all, split_train):
 

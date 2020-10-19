@@ -26,6 +26,8 @@ def get_args():
 if __name__ == '__main__':
     args = get_args()
     config = Config(args.config)
-    indexer = get_indexer(config)
+
+    indexer = get_indexer(module_name=config.indexer_name)
+
     indexer.make_indexes(input_path=config.input_path, output_path=config.output_path, 
         split_all=config.split_all, split_train=config.split_train)
