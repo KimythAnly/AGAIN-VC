@@ -2,3 +2,4 @@
 *.npy
 *.pkl
 *.pyc
+checkpoints/

@@ -22,7 +22,7 @@ class BaseIndexer():
         logger.info(f'The output file is saved to {out_path}')
 
     def gen_file_list(self, input_path):
-        return sorted(glob.glob(input_path))
+        return sorted(glob.glob(os.path.join(input_path, '*')))
 
     def split(self, file_list, split_all, split_train):
         raise NotImplementedError

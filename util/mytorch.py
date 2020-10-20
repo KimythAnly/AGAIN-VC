@@ -3,6 +3,9 @@ import os
 import numpy as np
 import random
 import shutil
+import logging
+
+logger = logging.getLogger(__file__)
 
 
 def np2pt(array):
@@ -64,5 +67,5 @@ def load_checkpoint(ckpt_dir_or_file, map_location=None, load_best=False):
     else:
         ckpt_path = ckpt_dir_or_file
     ckpt = torch.load(ckpt_path, map_location=map_location)
-    print(' [*] Loading checkpoint from %s succeed!' % ckpt_path)
+    logger.info(' [*] Loading checkpoint from %s succeed!' % ckpt_path)
     return ckpt

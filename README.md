@@ -3,5 +3,5 @@
 ## Preprocessing
 `python preprocess.py`
 
-## Making metadata for training
-`python make_metadata.py`
+## Making indexes for training
+`python make_indexes.py`
