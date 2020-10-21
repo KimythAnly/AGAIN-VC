@@ -8,7 +8,7 @@ from multiprocessing.pool import ThreadPool
 from util.dsp import Dsp
 
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 def preprocess_one(input_items, module, output_path=''):
     input_path, basename = input_items
@@ -42,10 +42,10 @@ def preprocess_one(input_items, module, output_path=''):
 
 
 class BasePreproceccor():
-    def __init__(self, feat_to_preprocess, feat_config):
+    def __init__(self, config):
         self.dsp_modules = {}
-        for feat in feat_to_preprocess:
-            self.dsp_modules[feat] = Dsp(feat_config[feat])
+        for feat in config.feat_to_preprocess:
+            self.dsp_modules[feat] = Dsp(config.feat[feat])
 
     def preprocess(self, input_path, output_path, feat, njobs):
         file_dict = self.gen_file_dict(input_path)

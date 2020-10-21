@@ -5,7 +5,7 @@ import random
 import shutil
 import logging
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 
 def np2pt(array):

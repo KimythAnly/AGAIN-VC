@@ -1,7 +1,7 @@
 import os
-import glob
 import pickle as pk
 import logging
+from  glob import glob
 
 logger = logging.getLogger(__file__)
 
@@ -22,7 +22,7 @@ class BaseIndexer():
         logger.info(f'The output file is saved to {out_path}')
 
     def gen_file_list(self, input_path):
-        return sorted(glob.glob(os.path.join(input_path, '*')))
+        return sorted(glob(os.path.join(input_path, '*')))
 
     def split(self, file_list, split_all, split_train):
         raise NotImplementedError

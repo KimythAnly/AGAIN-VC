@@ -5,7 +5,7 @@ import re
 from .base import BaseDataset
 from util.transform import segment, random_scale
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 class Dataset(BaseDataset):
     def __init__(self, dset, indexes_path, feat, feat_path, seglen, njobs, metadata):

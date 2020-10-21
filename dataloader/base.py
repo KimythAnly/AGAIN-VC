@@ -6,7 +6,7 @@ from tqdm import tqdm
 from torch.utils.data import Dataset
 from util.transform import segment 
 
-logger = logging.getLogger(__file__)
+logger = logging.getLogger(__name__)
 
 
 class BaseDataset(Dataset):

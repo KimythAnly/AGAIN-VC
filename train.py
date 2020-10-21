@@ -40,7 +40,8 @@ if __name__ == '__main__':
     config = Config(args.config)
     same_seeds(args.seed)
 
-    trainer = Trainer(config=config, args=args)
+
+    trainer = Trainer(config, args)
     trainer.train(total_steps=args.total_steps,
         verbose_steps=args.verbose_steps,
         log_steps=args.log_steps,

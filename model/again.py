@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from util.mytorch import np2pt
 
 def build_model(build_config, device, mode):
     model = Model(**build_config.model.params).to(device)
@@ -29,8 +30,8 @@ def build_model(build_config, device, mode):
     else:
         raise NotImplementedError
 
-
-def train_step(model_state, data, steps, train=True):
+# For training and evaluating 
+def train_step(model_state, data, train=True):
     meta = {}
     model = model_state['model']
     optimizer = model_state['optimizer']
@@ -56,10 +57,6 @@ def train_step(model_state, data, steps, train=True):
         torch.nn.utils.clip_grad_norm_(model.parameters(),
             max_norm=grad_norm)
         optimizer.step()
-        meta['message'] = f'rec: {loss_rec.item():.3f} |'
-    else:
-        meta['message'] = f'rec: {loss_rec.item():.3f} |'
-
 
     with torch.no_grad():
         model.eval()
@@ -84,6 +81,28 @@ def train_step(model_state, data, steps, train=True):
     }
 
     return meta
+
+# For inference
+def inference_step(model_state, data):
+    meta = {}
+    model = model_state['model']
+    device = model_state['device']
+    model.to(device)
+    model.eval()
+
+    source = data['source']['mel']
+    target = data['target']['mel']
+
+    source = np2pt(source).to(device)
+    target = np2pt(target).to(device)
+
+    dec = model.inference(source, target)
+
+    meta = {
+        'dec': dec
+    }
+    return meta
+
 
 # ====================================
 #  Modules
@@ -167,7 +186,6 @@ class ConvNorm2d(torch.nn.Module):
     def forward(self, signal):
         conv_signal = self.conv(signal)
         return conv_signal
-
 
 
 class EncConvBlock(nn.Module):
@@ -305,6 +323,26 @@ class Decoder(nn.Module):
         else:
             return y
 
+class VariantSigmoid(nn.Module):
+    def __init__(self, alpha):
+        super().__init__()
+        self.alpha = alpha
+    def forward(self, x):
+        y = 1 / (1+torch.exp(-self.alpha*x))
+        return y
+
+class Activation(nn.Module):
+    def __init__(self, act, params=None):
+        super().__init__()
+        dct = {
+            'none': lambda x: x,
+            'sigmoid': VariantSigmoid,
+            'tanh': nn.Tanh
+        }
+        self.act = dct[act](**params)
+
+    def forward(self, x):
+        return self.act(x)
 
 class Model(nn.Module):
     def __init__(self, encoder_params, decoder_params, activation_params):
@@ -312,6 +350,7 @@ class Model(nn.Module):
 
         self.encoder = Encoder(**encoder_params)
         self.decoder = Decoder(**decoder_params)
+        self.act = Activation(**activation_params)
 
     def forward(self, x, x_cond=None):
 
