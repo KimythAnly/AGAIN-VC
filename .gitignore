@@ -3,3 +3,5 @@
 *.pkl
 *.pyc
 checkpoints/
+wandb/
+data/generated/

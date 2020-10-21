@@ -1,10 +1,11 @@
 from util.parser import get_parser
 from util.config import Config
 from util.mytorch import same_seeds
-from inferencer import Inferencer
+from agent.inferencer import Inferencer
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(asctime)s | %(filename)s | %(message)s',\
+     datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 
 def get_args():
@@ -18,7 +19,7 @@ def get_args():
     parser.add_argument('--source', '-s', help='Input source wavefile.', required=True)
     parser.add_argument('--target', '-t', help='Input target wavefile.', required=True)
     parser.add_argument('--output', '-o', help='Output wavefile.', required=True)
-    parser.add_argument('--seglen', '-l', help='Segment length.', type=int, default=None)
+    parser.add_argument('--seglen', help='Segment length.', type=int, default=None)
 
 
     # dryrun
@@ -29,7 +30,7 @@ def get_args():
     # seed
     parser.add_argument('--seed', type=int, help='random seed', default=961998)
 
-    parser.add_argument('--load', '-l', type=str, help='', default='')
+    parser.add_argument('--load', '-l', type=str, help='checkpoint', required=True)
     parser.add_argument('--njobs', '-p', type=int, help='', default=4)
 
     return parser.parse_args()
@@ -39,7 +40,12 @@ if __name__ == '__main__':
     config = Config(args.config)
     args.dsp_config = Config(args.dsp_config)
 
+    logger.info(f'Config file:  {args.config}')
+    logger.info(f'Checkpoint:  {args.load}')
+    logger.info(f'Source path: {args.source}')
+    logger.info(f'Target path: {args.target}')
+    logger.info(f'Output path: {args.output}')
+
     same_seeds(args.seed)
     inferencer = Inferencer(config=config, args=args)
-    inferencer.load_wav_data()
-    inferencer.inference()
+    inferencer.inference(source_path=args.source, target_path=args.target, out_path=args.output, seglen=args.seglen)

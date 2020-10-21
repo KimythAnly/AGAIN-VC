@@ -93,8 +93,8 @@ class Dsp():
         ret = self.resemblyzer.embed_utterance(wav)
         return ret
 
-
-    def plot_spectrogram(self, mag, save=''):
+    @classmethod
+    def plot_spectrogram(cls, mag, save=''):
         librosa.display.specshow(mag, x_axis='off', cmap='viridis')
         plt.title('spectrogram')
         if save != '':

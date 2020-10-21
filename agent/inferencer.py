@@ -1,9 +1,13 @@
 import os
 import torch
 import logging
+import numpy as np
 from glob import glob
 from tqdm import tqdm
+
+from preprocessor.base import preprocess_one
 from .base import BaseAgent
+from util.dsp import Dsp
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +16,8 @@ def gen_wav_list(path):
         wav_list = glob(os.path.join(path, '*.wav'))
     elif os.path.isfile(path):
         wav_list = [path]
+    else:
+        raise NotImplementedError(f'{path} is invalid for generating wave file list.')
     return wav_list
 
 class WaveData():
@@ -41,9 +47,19 @@ class WaveData():
 class Inferencer(BaseAgent):
     def __init__(self, config, args):
         super().__init__(config, args)
+        self.indexes_path = config.dataset.indexes_path
+        self.dsp_modules = {}
+        for feat in config.dataset.feat:
+            if feat in self.dsp_modules.keys():
+                module = self.dsp_modules[feat]
+            else:
+                module = Dsp(args.dsp_config.feat[feat])
+                self.dsp_modules[feat] = module
+        self.model_state, self.step_fn = self.build_model(config.build)
+        self.model_state = self.load_model(self.model_state, args.load)
 
     def build_model(self, build_config):
-        return super()._build_model(build_config, mode='inference')
+        return super().build_model(build_config, mode='inference', device=self.device)
 
     def load_wav_data(self, source_path, target_path, out_path):
         # load wavefiles
@@ -69,29 +85,47 @@ class Inferencer(BaseAgent):
 
         return sources, targets, out_path
 
+    def process_wave_data(self, wav_data, seglen=None):
+        if wav_data.is_processed():
+            return
+        else:
+            wav_path = wav_data.path
+            basename = os.path.basename(wav_path)
+            for feat, module in self.dsp_modules.items():
+                wav_data[feat] = preprocess_one((wav_path, basename), module)
+                if seglen is not None:
+                    wav_data[feat] = wav_data[feat][:,:seglen]
+                wav_data.set_processed()
+            return
+
     # ====================================================
     #  inference
     # ====================================================
-    def inference(self):
-        try:
-            data = next(self.dev_iter)
-        except :
-            self.dev_iter = iter(self.dev_loader)
-            data = next(self.dev_iter)
+    def inference(self, source_path, target_path, out_path, seglen):
+        sources, targets, out_path = self.load_wav_data(source_path, target_path, out_path)
         with torch.no_grad():
+            for i, source in enumerate(sources):
+                for j, target in enumerate(targets):
+                    source_basename = os.path.basename(source.path).split('.wav')[0]
+                    target_basename = os.path.basename(target.path).split('.wav')[0]
+                    output_basename = f'{source_basename}_to_{target_basename}'
+                    output_wav = os.path.join(out_path, 'wav', output_basename+'.wav')
+                    output_plt = os.path.join(out_path, 'plt', output_basename+'.png')
+                    self.process_wave_data(source, seglen=seglen)
+                    # These two line is for generating the wav using melgan.
+                    # self.dsp.mel2wav(source['melgan'], os.path.join('data/tmp/mos_melgan/', source_basename+'.wav'))
+                    # continue
+                    self.process_wave_data(target, seglen=seglen)
+                    data = {
+                        'source': source,
+                        'target': target,
+                    }
+                    meta = self.step_fn(self.model_state, data)
+                    dec = meta['dec']
+                    self.mel2wav(dec, output_wav)
+                    Dsp.plot_spectrogram(dec.squeeze().cpu().numpy(), output_plt)
 
-            meta = self.step_fn(self.model_state, data, train=False)
-
-            mels = meta['mels']
-
-            _data = {}
-            for k, v in mels.items():
-                if v.shape[1] != 80:
-                    v = torch.nn.functional.interpolate(v.transpose(1,2), 80).transpose(1,2)
-                _data[k] = (v.cpu().numpy()/5+1, self.mel2wav(v))
-            self.writer.mels_summary(
-                tag='dev/unseen',
-                data=_data,
-                sample_rate=22050,
-                step=self.model_state['steps']
-            )
+                    source_plt = os.path.join(out_path, 'plt', f'{source_basename}.png')
+                    Dsp.plot_spectrogram(source['mel'], source_plt)
+                    np.save(os.path.join(out_path, 'mel', f'{source_basename}.npy'), source['mel'])
+        logger.info(f'The generated files are saved to {out_path}.')

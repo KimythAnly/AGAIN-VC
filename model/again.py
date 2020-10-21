@@ -26,7 +26,15 @@ def build_model(build_config, device, mode):
         }
         return model_state, train_step
     elif mode == 'inference':
-        raise NotImplementedError
+        model_state = {
+            'model': model,
+            # static, no need to be saved
+            'device': device,
+            '_dynamic_state': [
+                'model'
+            ]
+        }
+        return model_state, inference_step
     else:
         raise NotImplementedError
 
@@ -82,6 +90,9 @@ def train_step(model_state, data, train=True):
 
     return meta
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
 # For inference
 def inference_step(model_state, data):
     meta = {}
@@ -95,9 +106,8 @@ def inference_step(model_state, data):
 
     source = np2pt(source).to(device)
     target = np2pt(target).to(device)
-
+    
     dec = model.inference(source, target)
-
     meta = {
         'dec': dec
     }
@@ -332,14 +342,15 @@ class VariantSigmoid(nn.Module):
         return y
 
 class Activation(nn.Module):
+    dct = {
+        'none': lambda x: x,
+        'sigmoid': VariantSigmoid,
+        'tanh': nn.Tanh
+    }
     def __init__(self, act, params=None):
         super().__init__()
-        dct = {
-            'none': lambda x: x,
-            'sigmoid': VariantSigmoid,
-            'tanh': nn.Tanh
-        }
-        self.act = dct[act](**params)
+
+        self.act = Activation.dct[act](**params)
 
     def forward(self, x):
         return self.act(x)

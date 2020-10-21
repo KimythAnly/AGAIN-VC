@@ -19,7 +19,7 @@ class VocoderWrapper():
             y = self.vocoder.inverse(mel).cpu().numpy().flatten()
         if save != '':
             # librosa.output.write_wav(path=save, y=y, sr=sr)
-            sf.write(file=save, data=y, samplerate=sr)
+            sf.write(file=save, data=y, samplerate=self.sr)
         return y
 
 
