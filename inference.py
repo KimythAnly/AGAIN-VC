@@ -36,16 +36,21 @@ def get_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
+    # config
     args = get_args()
     config = Config(args.config)
+    same_seeds(args.seed)
     args.dsp_config = Config(args.dsp_config)
 
+    # log some info
     logger.info(f'Config file:  {args.config}')
     logger.info(f'Checkpoint:  {args.load}')
     logger.info(f'Source path: {args.source}')
     logger.info(f'Target path: {args.target}')
     logger.info(f'Output path: {args.output}')
 
-    same_seeds(args.seed)
+    # build inferencer
     inferencer = Inferencer(config=config, args=args)
+
+    # inference
     inferencer.inference(source_path=args.source, target_path=args.target, out_path=args.output, seglen=args.seglen)

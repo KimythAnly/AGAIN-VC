@@ -31,15 +31,26 @@ class DotDict(dict):
         return dct
 
 class Config(DotDict):
-    __getattr__ = dict.__getitem__
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__
 
     @staticmethod
     def yaml_load(path):
         ret = yaml.safe_load(open(path, 'r', encoding='utf8'))
         assert ret is not None, f'Config file {path} is empty.'
         return Config(ret)
+
+    @staticmethod
+    def trans(inp, dep=0):
+        ret = ''
+        if issubclass(type(inp), dict):
+            for k, v in inp.items():
+                ret += f'\n{"    "*dep}{k}: {Config.trans(v, dep+1)}'
+        elif issubclass(type(inp), list):
+            for v in inp:
+                ret += f'\n{"    "*dep}- {v}'
+        else:
+            ret += f'{inp}'
+        return ret
+
 
     def __init__(self, dct):
         if type(dct) is str:
@@ -54,10 +65,12 @@ class Config(DotDict):
 
     def __repr__(self):
         ret = f'[{self._name}]'
-        for k, v in self.items():
-            if k[0] != '_':
-                ret += f'\n    {k:16s}: {v}'
+        ret += Config.trans(self)
+        #for k, v in self.items():
+        #    if k[0] != '_':
+        #        ret += f'\n    {k:16s}: {Config.trans(v, 2)}'
         return ret
+
 
     def _apply_config(self, config, replace=False):
         for k, v in config.items():

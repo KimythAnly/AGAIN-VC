@@ -24,10 +24,13 @@ def get_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
+    # config
     args = get_args()
     config = Config(args.config)
 
+    # build indexer
     indexer = get_indexer(config)
 
+    # make indexes
     indexer.make_indexes(input_path=config.input_path, output_path=config.output_path, 
         split_all=config.split_all, split_train=config.split_train)

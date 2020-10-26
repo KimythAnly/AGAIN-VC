@@ -14,7 +14,7 @@ def get_args():
     parser = get_parser(description='Train')
     
     # config
-    parser.add_argument('--config', '-c', default='./config/train_again-c4s.yaml')
+    parser.add_argument('--config', '-c', default='./config/train_again-c4s.yaml', help='config yaml file')
 
     # dryrun
     parser.add_argument('--dry', action='store_true', help='whether to dry run')
@@ -36,12 +36,15 @@ def get_args():
     return parser.parse_args()
 
 if __name__ == '__main__':
+    # config
     args = get_args()
     config = Config(args.config)
     same_seeds(args.seed)
 
-
+    # build trainer
     trainer = Trainer(config, args)
+
+    # train
     trainer.train(total_steps=args.total_steps,
         verbose_steps=args.verbose_steps,
         log_steps=args.log_steps,

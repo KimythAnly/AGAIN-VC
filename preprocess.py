@@ -23,9 +23,9 @@ def get_args():
     parser = get_parser(description='Preprocess')
 
     # config
-    parser.add_argument('--config', '-c', default='./config/preprocess.yaml', help='Configure file path.')
+    parser.add_argument('--config', '-c', default='./config/preprocess.yaml', help='config yaml file')
     # multi process
-    parser.add_argument('--njobs', '-p', type=int, default=4, help='')
+    parser.add_argument('--njobs', '-p', type=int, default=4)
     # dryrun
     parser.add_argument('--dry', action='store_true', help='whether to dry run')
     # debugging mode
@@ -37,11 +37,11 @@ def get_args():
 
 
 if __name__ == '__main__':
-    # arguments and config
+    # config
     args = get_args()
     config = Config(args.config)
 
-    # init preprocessor
+    # build preprocessor
     preprocessor = get_preprocessor(config)
     
     # process
