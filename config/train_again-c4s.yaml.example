@@ -1,0 +1,50 @@
+_name: 'train_again'
+
+writer: wandb
+ckpt_dir: checkpoints/again
+flag: c4s
+
+dataset:
+    dataset_name: 'vctk'
+    feat_path: data/features
+    feat:
+        - 'mel'
+    indexes_path: ./data/indexes/default/indexes.pkl
+    seglen: 128
+
+dataloader:
+    train:
+        batch_size: 32
+        shuffle: True
+    dev:
+        batch_size: 64
+
+build:
+    model_name: again
+    model:
+        params: 
+            encoder_params:
+                c_in: 80
+                c_h: 256
+                c_out: 4
+                n_conv_blocks: 6
+                subsample: [1, 1, 1, 1, 1, 1]
+            decoder_params:
+                c_in: 4
+                c_h: 256
+                c_out: 80
+                n_conv_blocks: 6
+                upsample: [1, 1, 1, 1, 1, 1]
+            activation_params: 
+                act: sigmoid
+                params:
+                    alpha: 0.1
+    optimizer:
+        params:
+            lr: 0.0005
+            betas:
+                - 0.9
+                - 0.999
+            amsgrad: True
+            weight_decay: 0.0001
+        grad_norm: 3
