@@ -21,7 +21,7 @@ class BaseDataset(Dataset):
         self.speaker2data = BaseDataset.gen_speaker2data(self.data)
 
     def gen_metadata(self, dset, indexes_path, feat, feat_path, njobs):
-        logger.info(f'[INIT] Generate metadata({dset}) using {indexes_path}')
+        logger.info(f'Start to generate metadata({dset}) using {indexes_path}')
         indexes = pk.load(open(indexes_path, 'rb'))
         sdata = indexes[dset]
         metadata = [(spk, d) for spk, data in sdata.items() for d in data]
@@ -32,8 +32,8 @@ class BaseDataset(Dataset):
         print(len(results))
         return results
 
-    @classmethod
-    def gen_speaker2data(self, data):
+    @staticmethod
+    def gen_speaker2data(data):
         speaker2data = {}
         for i, d in enumerate(data):
             if d['speaker'] in speaker2data.keys():
@@ -42,8 +42,8 @@ class BaseDataset(Dataset):
                 speaker2data[d['speaker']] = [i]
         return speaker2data
 
-    @classmethod
-    def drop_invalid_data(self, data, verbose=False):
+    @staticmethod
+    def drop_invalid_data(data, verbose=False):
         return data
 
     def sub_process(self):

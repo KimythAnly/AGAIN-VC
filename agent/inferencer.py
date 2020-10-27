@@ -105,7 +105,9 @@ class Inferencer(BaseAgent):
         sources, targets, out_path = self.load_wav_data(source_path, target_path, out_path)
         with torch.no_grad():
             for i, source in enumerate(sources):
+                logger.info(f'Source: {source.path}')
                 for j, target in enumerate(targets):
+                    logger.info(f'Target: {target.path}')
                     source_basename = os.path.basename(source.path).split('.wav')[0]
                     target_basename = os.path.basename(target.path).split('.wav')[0]
                     output_basename = f'{source_basename}_to_{target_basename}'

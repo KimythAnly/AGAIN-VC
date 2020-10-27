@@ -16,14 +16,14 @@ class BaseAgent():
         self.vocoder = get_vocoder(device=self.device)
         self.mel2wav = self.vocoder.mel2wav
 
-    @classmethod
-    def build_model(cls, build_config, mode, device):
+    @staticmethod
+    def build_model(build_config, mode, device):
         _build_model = importlib.import_module(f'model.{build_config.model_name}').build_model
         model_state, step_fn = _build_model(build_config, device=device, mode=mode)
         return model_state, step_fn
 
-    @classmethod
-    def gen_data(cls, ckpt_path, flag, dataset_config, dataloader_config, njobs):
+    @staticmethod
+    def gen_data(ckpt_path, flag, dataset_config, dataloader_config, njobs):
         ckpt_dir = os.path.join(ckpt_path, '')
         ckpt_dir_flag = os.path.join(ckpt_dir, flag)
         prefix = os.path.basename(os.path.dirname(dataset_config.indexes_path))
@@ -53,8 +53,8 @@ class BaseAgent():
         
         return ckpt_dir_flag, train_set, dev_set, train_loader, dev_loader
 
-    @classmethod
-    def load_data(cls, ckpt_path, dataset_config, dataloader_config, njobs):
+    @staticmethod
+    def load_data(ckpt_path, dataset_config, dataloader_config, njobs):
         if os.path.isdir(ckpt_path):
             d = os.path.join(ckpt_path, '')
             with open(os.path.join(d, 'dirtype'), 'r') as f:
@@ -92,8 +92,8 @@ class BaseAgent():
         return ckpt_dir_flag, train_set, dev_set, train_loader, dev_loader
 
 
-    @classmethod
-    def save_model(cls, model_state, save_path):
+    @staticmethod
+    def save_model(model_state, save_path):
         dynamic_state = model_state['_dynamic_state']
         state = {}
         for key in dynamic_state:
@@ -103,8 +103,8 @@ class BaseAgent():
                 state[key] = model_state[key]
         save_checkpoint(state, save_path)
 
-    @classmethod
-    def load_model(cls, model_state, load_path):
+    @staticmethod
+    def load_model(model_state, load_path):
         dynamic_state = model_state['_dynamic_state']
         state = load_checkpoint(load_path)
         for key in dynamic_state:
