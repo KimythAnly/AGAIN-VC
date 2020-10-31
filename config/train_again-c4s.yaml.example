@@ -6,10 +6,10 @@ flag: c4s
 
 dataset:
     dataset_name: 'vctk'
-    feat_path: data/features
+    feat_path: data/features/vctk
     feat:
         - 'mel'
-    indexes_path: ./data/indexes/default/indexes.pkl
+    indexes_path: ./data/indexes/vctk/indexes.pkl
     seglen: 128
 
 dataloader:

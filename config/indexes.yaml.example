@@ -1,7 +1,7 @@
 _name: 'Make indexes Config (default)'
 
 input_path: './data/features/vctk/mel'
-output_path: './data/indexes/default'
+output_path: './data/indexes/vctk'
 
 indexer_name: vctk
 

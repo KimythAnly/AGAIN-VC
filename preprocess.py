@@ -24,14 +24,8 @@ def get_args():
 
     # config
     parser.add_argument('--config', '-c', default='./config/preprocess.yaml', help='config yaml file')
-    # multi process
+    # multi thread
     parser.add_argument('--njobs', '-p', type=int, default=4)
-    # dryrun
-    parser.add_argument('--dry', action='store_true', help='whether to dry run')
-    # debugging mode
-    parser.add_argument('--debug', action='store_true', help='debugging mode')
-    # seed
-    parser.add_argument('--seed', type=int, help='random seed', default=961998)
 
     return parser.parse_args()
 
