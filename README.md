@@ -11,7 +11,7 @@ python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 # Example:
 python preprocess.py -c config/preprocess.yaml
 ```
-Preprocessing the wavefiles into acoustic features (eg. mel-spectrogram).
+Preprocessing the wave files into acoustic features (eg. mel-spectrogram).
 
 ### Making indexes for training
 ```bash
