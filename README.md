@@ -8,28 +8,37 @@ https://kimythanly.github.io/AGAIN-VC-demo/index
 ```bash
 python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 ```
-  - --config, -c
-    - The path of config file.
-  - --njobs, -p
-    - Number of jobs.
 
 ### Making indexes for training
 ```bash
-python make_indexes.py [--config <CONFIG>] [--seed <SEED>]
+python make_indexes.py [--config <CONFIG>]
 ```
 
 ### Training
 ```
-python train.py
-                [-h] [--config <CONFIG>] [--dry] [--debug] [--seed <SEED>] [--load <LOAD>] [--njobs <NJOBS>] [--total-steps <TOTAL_STEPS>]
-                [--verbose-steps <VERBOSE_STEPS>] [--log-steps <LOG_STEPS>] [--save-steps <SAVE_STEPS>] [--eval-steps <EVAL_STEPS>]
+python train.py 
+                [--config <CONFIG>]
+                [--dry] [--debug] [--seed <SEED>]
+                [--load <LOAD>]
+                [--njobs <NJOBS>] 
+                [--total-steps <TOTAL_STEPS>]
+                [--verbose-steps <VERBOSE_STEPS>] 
+                [--log-steps <LOG_STEPS>]
+                [--save-steps <SAVE_STEPS>]
+                [--eval-steps <EVAL_STEPS>]
 ```
 
 ### Inference
 ```
 python inference.py
-                    [-h] [--config <CONFIG>] [--dsp-config <DSP_CONFIG>] --source <SOURCE> --target <TARGET> --output <OUTPUT>
-                    [--seglen <SEGLEN>] [--dry] [--debug] [--seed <SEED>] --load <LOAD> [--njobs <NJOBS>]
+                    --load <LOAD>
+                    --source <SOURCE>
+                    --target <TARGET>
+                    --output <OUTPUT>
+                    [--config <CONFIG>]
+                    [--dsp-config <DSP_CONFIG>]
+                    [--seglen <SEGLEN>] [--dry] [--debug] [--seed <SEED>]
+                    [--njobs <NJOBS>]
 ```
 
 ### Pre-trained model
