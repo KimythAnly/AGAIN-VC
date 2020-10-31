@@ -11,6 +11,7 @@ python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 # Example:
 python preprocess.py -c config/preprocess.yaml
 ```
+Preprocessing the wavefiles into acoustic features (eg. mel-spectrogram).
 
 ### Making indexes for training
 ```bash
@@ -19,6 +20,7 @@ python make_indexes.py [--config <CONFIG>]
 # Example
 python make_indexes.py -c config/make_indexes.yaml
 ```
+Splitting the train/dev set from the preprocessed features.
 
 ### Training
 ```bash
