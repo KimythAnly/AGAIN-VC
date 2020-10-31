@@ -52,7 +52,7 @@ class Dsp():
         return y
 
     def save_wav(self, y, path):
-        sf.write(file=path, data=y, samplerate=self.config.samplerate)
+        sf.write(file=path, data=y, samplerate=self.config.sample_rate)
 
     def build_mel_basis(self):
         self.mel_basis = librosa.filters.mel(self.config.sample_rate, self.config.n_fft,
