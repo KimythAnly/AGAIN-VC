@@ -1,4 +1,7 @@
 # AGAIN-VC
+This is the official implementation of the paper **AGAIN-VC: A One-shot Voice Conversion using Activation Guidance and Adaptive Instance Normalization**.
+AGAIN-VC is an auto-encoder-based model, comprising of a single encoder and a decoder. With a proper activation as an information bottleneck on content embeddings, the trade-off between the synthesis quality and thespeaker similarity of the converted speech is improved drasti-cally. 
+<img src="https://github.com/KimythAnly/AGAIN-VC/blob/main/model.png" width="400" img align="right">
 
 ## Demo page
 https://kimythanly.github.io/AGAIN-VC-demo/index
@@ -41,6 +44,7 @@ python train.py \
   --seed 1234567 \
   --total-steps 100000
 ```
+Note we use `wandb` as the default training logger. You can also use other training logger like `tensorboard`, but you need to edit `util/mylogger.py` first.
 
 ### Inference
 ```bash
