@@ -11,17 +11,16 @@ logger = logging.getLogger(__name__)
 def get_args():
     parser = get_parser(description='Inference')
 
-    # config
-    parser.add_argument('--config', '-c', help='The train config with respect to the model resumed.', default='./config/train.yaml')
-    parser.add_argument('--dsp-config', '-d', help='The dsp config with respect to the training data.', default='./config/preprocess.yaml')
-
-    # 
+    # required
+    parser.add_argument('--load', '-l', type=str, help='checkpoint', required=True)
     parser.add_argument('--source', '-s', help='Input source wavefile.', required=True)
     parser.add_argument('--target', '-t', help='Input target wavefile.', required=True)
     parser.add_argument('--output', '-o', help='Output wavefile.', required=True)
-    parser.add_argument('--seglen', help='Segment length.', type=int, default=None)
 
-
+    # config
+    parser.add_argument('--config', '-c', help='The train config with respect to the model resumed.', default='./config/train.yaml')
+    parser.add_argument('--dsp-config', '-d', help='The dsp config with respect to the training data.', default='./config/preprocess.yaml')
+   
     # dryrun
     parser.add_argument('--dry', action='store_true', help='whether to dry run')
     # debugging mode
@@ -30,8 +29,9 @@ def get_args():
     # seed
     parser.add_argument('--seed', type=int, help='random seed', default=961998)
 
-    parser.add_argument('--load', '-l', type=str, help='checkpoint', required=True)
+    # 
     parser.add_argument('--njobs', '-p', type=int, help='', default=4)
+    parser.add_argument('--seglen', help='Segment length.', type=int, default=None)
 
     return parser.parse_args()
 
