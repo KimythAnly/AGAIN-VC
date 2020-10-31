@@ -5,13 +5,17 @@ https://kimythanly.github.io/AGAIN-VC-demo/index
 
 ## Usage
 ### Preprocessing
+```bash
+python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 ```
-python preprocess.py [-h] [--config <CONFIG>] [--njobs <NJOBS>] [--dry] [--debug] [--seed <SEED>]
-```
+  - --config, -c
+    - The path of config file.
+  - --njobs, -p
+    - Number of jobs.
 
 ### Making indexes for training
-```
-python make_indexes.py [-h] [--config <CONFIG>] [--dry] [--debug] [--seed <SEED>]
+```bash
+python make_indexes.py [--config <CONFIG>] [--seed <SEED>]
 ```
 
 ### Training
