@@ -26,13 +26,13 @@ def get_args():
     parser.add_argument('--seed', type=int, help='random seed', default=961998)
 
     # 
-    parser.add_argument('--load', '-l', type=str, help='', default='')
+    parser.add_argument('--load', '-l', type=str, help='Load a checkpoint.', default='')
     parser.add_argument('--njobs', '-p', type=int, help='', default=4)
-    parser.add_argument('--total-steps', type=int, help='', default=100000)
-    parser.add_argument('--verbose-steps', type=int, help='', default=10)
-    parser.add_argument('--log-steps', type=int, help='', default=500)
-    parser.add_argument('--save-steps', type=int, help='', default=5000)
-    parser.add_argument('--eval-steps', type=int, help='', default=5000)
+    parser.add_argument('--total-steps', type=int, help='Total training steps.', default=100000)
+    parser.add_argument('--verbose-steps', type=int, help='The steps to update tqdm message.', default=10)
+    parser.add_argument('--log-steps', type=int, help='The steps to log data for the customed logger (wandb, tensorboard, etc.).', default=500)
+    parser.add_argument('--save-steps', type=int, help='The steps to save a checkpoint.', default=5000)
+    parser.add_argument('--eval-steps', type=int, help='The steps to evaluate.', default=5000)
 
     return parser.parse_args()
 

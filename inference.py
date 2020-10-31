@@ -12,10 +12,10 @@ def get_args():
     parser = get_parser(description='Inference')
 
     # required
-    parser.add_argument('--load', '-l', type=str, help='checkpoint', required=True)
-    parser.add_argument('--source', '-s', help='Input source wavefile.', required=True)
-    parser.add_argument('--target', '-t', help='Input target wavefile.', required=True)
-    parser.add_argument('--output', '-o', help='Output wavefile.', required=True)
+    parser.add_argument('--load', '-l', type=str, help='Load a checkpoint.', required=True)
+    parser.add_argument('--source', '-s', help='Source path. A .wav file or a directory containing .wav files.', required=True)
+    parser.add_argument('--target', '-t', help='Target path. A .wav file or a directory containing .wav files.', required=True)
+    parser.add_argument('--output', '-o', help='Output directory.', required=True)
 
     # config
     parser.add_argument('--config', '-c', help='The train config with respect to the model resumed.', default='./config/train.yaml')
@@ -29,7 +29,7 @@ def get_args():
     # seed
     parser.add_argument('--seed', type=int, help='random seed', default=961998)
 
-    # 
+    # [--log-steps <LOG_STEPS>]
     parser.add_argument('--njobs', '-p', type=int, help='', default=4)
     parser.add_argument('--seglen', help='Segment length.', type=int, default=None)
 
