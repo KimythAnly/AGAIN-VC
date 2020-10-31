@@ -1,6 +1,6 @@
 # AGAIN-VC
 This is the official implementation of the paper **AGAIN-VC: A One-shot Voice Conversion using Activation Guidance and Adaptive Instance Normalization**.
-AGAIN-VC is an auto-encoder-based model, comprising of a single encoder and a decoder. With a proper activation as an information bottleneck on content embeddings, the trade-off between the synthesis quality and thespeaker similarity of the converted speech is improved drasti-cally. 
+AGAIN-VC is an auto-encoder-based model, comprising of a single encoder and a decoder. With a proper activation as an information bottleneck on content embeddings, the trade-off between the synthesis quality and thespeaker similarity of the converted speech is improved drastically. 
 
 <img src="https://github.com/KimythAnly/AGAIN-VC/blob/main/model.png" width="400">
 
