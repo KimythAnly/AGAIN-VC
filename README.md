@@ -19,6 +19,7 @@ python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 python preprocess.py -c config/preprocess.yaml
 ```
 Preprocessing the wave files into acoustic features (eg. mel-spectrogram).
+Note that we provide a tiny subset of VCTK corpus in this repo just for checking whether the code works or not. If you want to use the whole VCTK corpus, please make sure to revise the preprocessing config file first.
 
 ### Making indexes for training
 ```bash
