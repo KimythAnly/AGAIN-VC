@@ -2,13 +2,11 @@
 This is the official implementation of the paper **AGAIN-VC: A One-shot Voice Conversion using Activation Guidance and Adaptive Instance Normalization**.
 AGAIN-VC is an auto-encoder-based model, comprising of a single encoder and a decoder. With a proper activation as an information bottleneck on content embeddings, the trade-off between the synthesis quality and thespeaker similarity of the converted speech is improved drastically. 
 
+The demo page is [here](https://kimythanly.github.io/AGAIN-VC-demo/), and the pretrained model is available [here](https://drive.google.com/drive/folders/1qxVVS07VWdp1Kwsf-XI7TyD0fowA7bGp?usp=sharing).
+
 The figure shows the model overview. The left part is the encoder, while the right part is the decoder. Note that L1 Loss is to make the input mel-spectrogram and the output as close as possible.
 
 <img src="https://github.com/KimythAnly/AGAIN-VC/blob/main/model.png" width="400">
-
-
-## Demo page
-https://kimythanly.github.io/AGAIN-VC-demo/index
 
 ## Usage
 ### Preprocessing
@@ -71,6 +69,3 @@ python inference.py \
   -t data/wav48/p226/p226_001.wav \
   -o data/generated
 ```
-
-### Pre-trained model
-You can download our pre-trained model [here](https://drive.google.com/drive/folders/1qxVVS07VWdp1Kwsf-XI7TyD0fowA7bGp?usp=sharing).
