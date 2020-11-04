@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def np2pt(array):
-    return torch.from_numpy(array[None])
+    return torch.from_numpy(array[None]).float()
 
 def same_seeds(seed):
     torch.manual_seed(seed)
