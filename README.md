@@ -1,14 +1,12 @@
 # AGAIN-VC
-This is the official implementation of the paper **AGAIN-VC: A One-shot Voice Conversion using Activation Guidance and Adaptive Instance Normalization**.
+This is the official implementation of the paper [**AGAIN-VC: A One-shot Voice Conversion using Activation Guidance and Adaptive Instance Normalization**](https://arxiv.org/abs/2011.00316).
 AGAIN-VC is an auto-encoder-based model, comprising of a single encoder and a decoder. With a proper activation as an information bottleneck on content embeddings, the trade-off between the synthesis quality and thespeaker similarity of the converted speech is improved drastically. 
+
+The demo page is [here](https://kimythanly.github.io/AGAIN-VC-demo/), and the pretrained model is available [here](https://drive.google.com/drive/folders/1qxVVS07VWdp1Kwsf-XI7TyD0fowA7bGp?usp=sharing).
 
 The figure shows the model overview. The left part is the encoder, while the right part is the decoder. Note that L1 Loss is to make the input mel-spectrogram and the output as close as possible.
 
 <img src="https://github.com/KimythAnly/AGAIN-VC/blob/main/model.png" width="400">
-
-
-## Demo page
-https://kimythanly.github.io/AGAIN-VC-demo/index
 
 ## Usage
 ### Preprocessing
@@ -19,6 +17,7 @@ python preprocess.py [--config <CONFIG>] [--njobs <NJOBS>]
 python preprocess.py -c config/preprocess.yaml
 ```
 Preprocessing the wave files into acoustic features (eg. mel-spectrogram).
+Note that we provide a tiny subset of VCTK corpus in this repo just for checking whether the code works or not. If you want to use the whole VCTK corpus, please make sure to revise the preprocessing config file first.
 
 ### Making indexes for training
 ```bash
@@ -70,6 +69,3 @@ python inference.py \
   -t data/wav48/p226/p226_001.wav \
   -o data/generated
 ```
-
-### Pre-trained model
-You can download our pre-trained model [here](https://drive.google.com/drive/folders/1qxVVS07VWdp1Kwsf-XI7TyD0fowA7bGp?usp=sharing).
