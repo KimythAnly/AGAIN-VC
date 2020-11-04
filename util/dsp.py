@@ -99,5 +99,6 @@ class Dsp():
         plt.title('spectrogram')
         if save != '':
             plt.savefig(save, format='jpg')
+            plt.close()
         else:
             plt.show()
