@@ -1,0 +1,35 @@
+# Please refer to './util/dsp.py' and './preprocessor/base.py' for more details.
+
+_name: 'Preprocess Config (default)'
+
+input_path: './data/wav48'
+output_path: './data/features/vctk'
+
+preprocessor_name: vctk
+
+# Each element in 'feat_to_preprocess' should be defined in the 'feat' session.
+feat_to_preprocess:
+    - mel
+    # - wav
+    # - resemblyzer
+
+# Feature Configuration
+feat:
+    wav:
+       dtype: 'wav'
+       sample_rate: 22050
+       trim: 20
+    mel: # this is for MelGAN
+       dtype: 'melspectrogram'
+       n_fft: 1024
+       hop_length: 256
+       win_length: 1024
+       sample_rate: 22050
+       n_mels: 80
+       f_min: 0
+       f_max: 11025
+       trim: 20
+    # resemblyzer:
+    #     dtype: 'resemblyzer'
+
+

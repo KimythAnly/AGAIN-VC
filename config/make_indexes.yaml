@@ -1,0 +1,14 @@
+_name: 'Make indexes Config (default)'
+
+input_path: './data/features/vctk/mel'
+output_path: './data/indexes/vctk'
+
+indexer_name: vctk
+
+split_all:
+    train: 80
+    dev: 29
+
+split_train:
+    train: 200
+    dev: 20
