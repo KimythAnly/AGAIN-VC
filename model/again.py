@@ -337,9 +337,16 @@ class VariantSigmoid(nn.Module):
         y = 1 / (1+torch.exp(-self.alpha*x))
         return y
 
+class NoneAct(nn.Module):
+    def __init__(self):
+        super().__init__()
+    def forward(self, x):
+        return x
+
+
 class Activation(nn.Module):
     dct = {
-        'none': lambda x: x,
+        'none': NoneAct,
         'sigmoid': VariantSigmoid,
         'tanh': nn.Tanh
     }
