@@ -7,13 +7,13 @@ from util.mylogger import get_writer
 class Trainer(BaseAgent):
     def __init__(self, config, args):
         super().__init__(config, args)
-        self.model_state, self.step_fn = self.build_model(config.build)
         if args.load != '':
             self.ckpt_dir_flag, self.train_set, self.dev_set, self.train_loader, self.dev_loader = \
                 self.load_data(ckpt_path=args.load, 
                     dataset_config=config.dataset, 
                     dataloader_config=config.dataloader,
                     njobs=args.njobs)
+            self.model_state, self.step_fn = self.build_model(config.build)
             self.model_state = self.load_model(self.model_state, args.load)
         else:
             self.ckpt_dir_flag, self.train_set, self.dev_set, self.train_loader, self.dev_loader = \
@@ -21,6 +21,7 @@ class Trainer(BaseAgent):
                     dataset_config=config.dataset, 
                     dataloader_config=config.dataloader,
                     njobs=args.njobs)
+            self.model_state, self.step_fn = self.build_model(config.build)
         # use customed logger
         # eg. wandb, tensorboard
         self.writer = get_writer(config, args, self.ckpt_dir_flag)
