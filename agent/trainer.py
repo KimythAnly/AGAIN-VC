@@ -38,9 +38,7 @@ class Trainer(BaseAgent):
             for data in train_bar:
                 self.model_state['steps'] += 1
                 meta = self.step_fn(self.model_state, data)
-                if self.model_state['steps'] % verbose_steps == 0:
-                    meta['log']['steps'] = self.model_state['steps']
-                    train_bar.set_postfix(meta['log'])
+
                 if self.model_state['steps'] % log_steps == 0:
                     if self.writer is None:
                         print('* self.writer is not implemented.')
@@ -58,6 +56,11 @@ class Trainer(BaseAgent):
                             sample_rate=22050,
                             step=self.model_state['steps']
                         )
+                        
+                if self.model_state['steps'] % verbose_steps == 0:
+                    meta['log']['steps'] = self.model_state['steps']
+                    train_bar.set_postfix(meta['log'])
+
                 if self.model_state['steps'] % save_steps == 0:
                     self.save_model(self.model_state, \
                         os.path.join(self.ckpt_dir_flag, f'steps_{self.model_state["steps"]}.pth'))

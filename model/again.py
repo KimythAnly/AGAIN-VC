@@ -302,7 +302,7 @@ class Decoder(nn.Module):
         y1, _, _ = enc
         y2, mns, sds = cond
         mn, sd = self.inorm.calc_mean_std(y2)
-        c = y1
+        c = self.inorm(y1)
         c_affine = c * sd + mn
 
         y = self.in_layer(c_affine)
