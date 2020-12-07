@@ -30,32 +30,9 @@ class Dataset(BaseDataset):
         speaker = self.data[index]['speaker']
         mel = self.data[index]['mel']
 
-        mel, r = segment(mel, return_r=True, seglen=self.seglen)
-        pos = random_scale(mel)
-
-        candidates = list(self.speaker2data.keys())
-
-        neg_i = np.random.choice(len(candidates) - 1)
-        if candidates[neg_i] == speaker:
-            neg_speaker = candidates[-1]
-        else:
-            neg_speaker = candidates[neg_i]
-        
-        candidates = self.speaker2data[neg_speaker]
-        if len(candidates) == 1:
-            import pdb; pdb.set_trace()
-        
-        neg_i = np.random.choice(len(candidates) - 1)
-        # print(candidates[neg_i], len(self.data))
-        neg = self.data[candidates[neg_i]]['mel']
-        neg = segment(neg, seglen=self.seglen)
-        neg = random_scale(neg)
-
+        mel = segment(mel, return_r=False, seglen=self.seglen)
 
         meta = {
-            'speaker': speaker,
             'mel': mel,
-            'pos': pos,
-            'neg': neg
         }
         return meta
